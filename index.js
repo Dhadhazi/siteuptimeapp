@@ -10,6 +10,7 @@ const url = require("url");
 const StringDecoder = require("string_decoder").StringDecoder;
 const config = require("./config");
 const fs = require("fs");
+const _data = require("./lib/data");
 
 // Instantiate the HTTP server
 const httpServer = http.createServer(function (req, res) {
@@ -26,6 +27,7 @@ const httpsServerOptions = {
   key: fs.readFileSync("./https/key.pem"),
   cert: fs.readFileSync("./https/cert.pem"),
 };
+
 const httpsServer = https.createServer(httpsServerOptions, function (req, res) {
   unifiedServer(req, res);
 });
@@ -99,10 +101,10 @@ const unifiedServer = function (req, res) {
 // Define the handlers
 var handlers = {};
 
-// Sample handler
-handlers.sample = function (data, callback) {
+// Ping handler
+handlers.ping = function (data, callback) {
   // Callback a http status code, and a payload object
-  callback(406, { name: "sample handler" });
+  callback(200);
 };
 
 // Not found handler
@@ -112,5 +114,5 @@ handlers.notFound = function (data, callback) {
 
 // Define a request router
 const router = {
-  sample: handlers.sample,
+  ping: handlers.ping,
 };
